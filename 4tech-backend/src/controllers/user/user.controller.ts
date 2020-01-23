@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Put, Delete } from '@nestjs/common';
 import { UserService } from 'src/services/user/user.service';
 import { UserViewModel } from 'src/domain/user.viewmodel';
+import { UserLoginViewModel } from 'src/domain/userlogin.viewmodel';
 
 @Controller('user')
 export class UserController {
@@ -30,7 +31,7 @@ export class UserController {
     }
 
     @Delete()
-    deleteUser(@Body() user: UserViewModel) {
+    deleteUser(@Body() user: UserLoginViewModel) {
         return this.userService.deleteUser(user);
     }
 

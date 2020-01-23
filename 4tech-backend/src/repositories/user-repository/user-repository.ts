@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserViewModel } from 'src/domain/user.viewmodel';
+import { UserLoginViewModel } from 'src/domain/userlogin.viewmodel';
 
 @Injectable()
 export class UserRepository {
@@ -21,8 +22,8 @@ export class UserRepository {
         return 'User successfully updated';
     }
 
-    deleteUser(user: UserViewModel) {
-        this.db.splice( this.db.indexOf(user), 1 );
+    deleteUser(user: UserLoginViewModel) {
+        this.db.splice( this.db.findIndex(x => x.userLogin === user.userLogin), 1 );
         return 'User successfully removed';
     }
 

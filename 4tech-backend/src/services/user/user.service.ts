@@ -2,6 +2,7 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import { UserRepository } from 'src/repositories/user-repository/user-repository';
 import { UserViewModel } from 'src/domain/user.viewmodel';
 import { LoginViewModel } from 'src/domain/login.viewmodel';
+import { UserLoginViewModel } from 'src/domain/userlogin.viewmodel';
 
 @Injectable()
 export class UserService {
@@ -40,7 +41,7 @@ export class UserService {
         return this.userRepository.updateUser(user);
     }
 
-    deleteUser(user: UserViewModel) {
+    deleteUser(user: UserLoginViewModel) {
         const userList = this.userRepository.getUsers();
         const existingUser = userList.find(x => x.userLogin === user.userLogin);
 
