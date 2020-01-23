@@ -7,6 +7,6 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    return 'API do 4tech está de pé';
+    return this.appService.getHello();
   }
 }
