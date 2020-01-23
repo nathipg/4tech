@@ -1,21 +1,26 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { LoginViewModel } from 'src/domain/login.viewmodel';
 import { UserService } from '../user/user.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
 
-    constructor(private userService: UserService) {
+    constructor(
+        private userService: UserService,
+        private jwtService: JwtService) {
     }
 
     login(login: LoginViewModel) {
         const user = this.userService.attemptLogin(login);
 
         if(!user) {
-            throw new BadRequestException('User login or user password are incorrect');
+            throw new BadRequestException('Incorrect Credentials');
         }
 
-        return 'Authenticated';
+        return {
+            access_token: this.jwtService.sign({status: 'Authorized'})
+        };
     }
 
 }

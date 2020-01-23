@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Delete, UseGuards } from '@nestjs/common';
 import { UserService } from 'src/services/user/user.service';
 import { UserViewModel } from 'src/domain/user.viewmodel';
 import { UserLoginViewModel } from 'src/domain/userlogin.viewmodel';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('user')
 export class UserController {
@@ -10,6 +11,7 @@ export class UserController {
 
     }
 
+    @UseGuards(AuthGuard('jwt'))
     @Get()
     getUsers() {
         return this.userService.getUsers();
