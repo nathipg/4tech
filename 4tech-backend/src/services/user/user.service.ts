@@ -25,6 +25,32 @@ export class UserService {
         return this.userRepository.createUser(newUser);
     }
 
+    createUsers(newUsers: UserViewModel[]) {
+        return newUsers.map(newUser => this.createUser(newUser));
+    }
+
+    updateUser(user: UserViewModel) {
+        const userList = this.userRepository.getUsers();
+        const existingUser = userList.find(x => x.userLogin === user.userLogin);
+
+        if(!existingUser) {
+            throw new BadRequestException('This user doesn\'t exists!');
+        }
+
+        return this.userRepository.updateUser(user);
+    }
+
+    deleteUser(user: UserViewModel) {
+        const userList = this.userRepository.getUsers();
+        const existingUser = userList.find(x => x.userLogin === user.userLogin);
+
+        if(!existingUser) {
+            throw new BadRequestException('This user doesn\'t exists!');
+        }
+
+        return this.userRepository.deleteUser(user);
+    }
+
     attemptLogin(login: LoginViewModel) {
         const userList = this.userRepository.getUsers();
 

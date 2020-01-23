@@ -15,4 +15,15 @@ export class UserRepository {
         return 'User successfully added';
     }
 
+    updateUser(user: UserViewModel) {
+        const userIndex = this.db.findIndex(x => x.userLogin === user.userLogin);
+        this.db[userIndex] = user;
+        return 'User successfully updated';
+    }
+
+    deleteUser(user: UserViewModel) {
+        this.db.splice( this.db.indexOf(user), 1 );
+        return 'User successfully removed';
+    }
+
 }
