@@ -2,7 +2,7 @@ import { axios4tech } from './config';
 
 export const login = async (userLogin, password) => {
     try {
-        const response = axios4tech.post('auth/login', {
+        const response = await axios4tech.post('auth/login', {
             userLogin,
             password
         });
@@ -16,6 +16,11 @@ export const login = async (userLogin, password) => {
     } catch(e) {
         return e;
     }
+};
+
+export const isAuthenticated = () => {
+    console.log(localStorage.getItem('token') !== null);
+    return localStorage.getItem('token') !== null;
 };
 
 export const logout = () => {

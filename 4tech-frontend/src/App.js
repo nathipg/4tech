@@ -9,6 +9,7 @@ import {
 
 import Login from './containers/Login/Login';
 import Timeline from './containers/Timeline/Timeline';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 
 import './App.css';
 
@@ -17,7 +18,7 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/" component={Login} />
-        <Route path="/timeline" component={Timeline} />
+        <PrivateRoute exact path="/timeline" component={Timeline} />
         <Redirect to="/" />
       </Switch>
     </Router>
