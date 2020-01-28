@@ -1,32 +1,41 @@
 import { Injectable } from '@nestjs/common';
 import { UserViewModel } from 'src/domain/user.viewmodel';
-import { UserLoginViewModel } from 'src/domain/userlogin.viewmodel';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { User } from 'src/domain/schemas/user.schema';
 
 @Injectable()
 export class UserRepository {
+  constructor(
+    @InjectModel('User') private readonly userCollection: Model<User>) {
 
-    db: UserViewModel[] = [
-        new UserViewModel('apollo', 'Apollo', '123')
-    ];
+  }
 
-    getUsers() {
-        return this.db;
-    }
+  async getByCredentials(userLoginFromViewModel: string, passwordFromViewModel: string) {
+    return await this.userCollection
+      .findOne({
+        userLogin: userLoginFromViewModel,
+        password: passwordFromViewModel,
+      })
+      .lean();
+  }
 
-    createUser(newUser: UserViewModel) {
-        this.db.push(newUser);
-        return 'User successfully added';
-    }
+  async getById(id: string): Promise<User> {
+    return await this.userCollection
+      .findOne({ _id: id })
+      .lean();
+  }
 
-    updateUser(user: UserViewModel) {
-        const userIndex = this.db.findIndex(x => x.userLogin === user.userLogin);
-        this.db[userIndex] = user;
-        return 'User successfully updated';
-    }
+  async getUsers(): Promise<User[]> {
+    return await this.userCollection
+      .find()
+      .select({ __v: false, password: false })
+      .lean();
+  }
 
-    deleteUser(user: UserLoginViewModel) {
-        this.db.splice( this.db.findIndex(x => x.userLogin === user.userLogin), 1 );
-        return 'User successfully removed';
-    }
+  async createUser(newUser: UserViewModel) {
+    const user = this.userCollection(newUser);
+    return await user.save();
+  }
 
 }
